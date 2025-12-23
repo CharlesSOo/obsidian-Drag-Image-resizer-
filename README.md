@@ -44,6 +44,7 @@ Then copy `main.js`, `manifest.json`, and `styles.css` to your vault's plugins f
 - **Show dimensions while resizing** - Display size during drag (default: on)
 - **Hide link syntax** - Hide `![[image|width]]` in Live Preview for cleaner display (default: on)
 - **Click to select and delete** - Click to select an image, Delete/Backspace to remove (default: on)
+- **Fix image grid spacing** - Remove whitespace gaps between consecutive images in Reading mode (default: on)
 - **Minimum width/height** - Set minimum dimensions for resized images
 - **Handle size** - Customize the resize handle size
 - **Handle color** - Customize the resize handle color

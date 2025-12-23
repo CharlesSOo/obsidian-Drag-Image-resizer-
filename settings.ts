@@ -6,6 +6,7 @@ export interface ImageScaleSettings {
 	showDimensionsWhileResizing: boolean;
 	hideLinkSyntax: boolean;
 	enableClickToDelete: boolean;
+	fixImageGridSpacing: boolean;
 	minWidth: number;
 	minHeight: number;
 	handleSize: number;
@@ -17,6 +18,7 @@ export const DEFAULT_SETTINGS: ImageScaleSettings = {
 	showDimensionsWhileResizing: true,
 	hideLinkSyntax: true,
 	enableClickToDelete: true,
+	fixImageGridSpacing: true,
 	minWidth: 50,
 	minHeight: 50,
 	handleSize: 10,
@@ -75,6 +77,17 @@ export class ImageScaleSettingTab extends PluginSettingTab {
 				.onChange(async (value) => {
 					this.plugin.settings.enableClickToDelete = value;
 					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
+			.setName('Fix image grid spacing')
+			.setDesc('Remove whitespace gaps between consecutive images in Reading mode (works with any theme)')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.fixImageGridSpacing)
+				.onChange(async (value) => {
+					this.plugin.settings.fixImageGridSpacing = value;
+					await this.plugin.saveSettings();
+					this.plugin.updateFixImageGridSpacing();
 				}));
 
 		new Setting(containerEl)

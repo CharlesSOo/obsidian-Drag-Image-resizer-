@@ -36,6 +36,7 @@ var DEFAULT_SETTINGS = {
   showDimensionsWhileResizing: true,
   hideLinkSyntax: true,
   enableClickToDelete: true,
+  fixImageGridSpacing: true,
   minWidth: 50,
   minHeight: 50,
   handleSize: 10,
@@ -65,6 +66,11 @@ var ImageScaleSettingTab = class extends import_obsidian.PluginSettingTab {
     new import_obsidian.Setting(containerEl).setName("Click to select and delete").setDesc("Click an image to select it, then press Delete or Backspace to remove").addToggle((toggle) => toggle.setValue(this.plugin.settings.enableClickToDelete).onChange(async (value) => {
       this.plugin.settings.enableClickToDelete = value;
       await this.plugin.saveSettings();
+    }));
+    new import_obsidian.Setting(containerEl).setName("Fix image grid spacing").setDesc("Remove whitespace gaps between consecutive images in Reading mode (works with any theme)").addToggle((toggle) => toggle.setValue(this.plugin.settings.fixImageGridSpacing).onChange(async (value) => {
+      this.plugin.settings.fixImageGridSpacing = value;
+      await this.plugin.saveSettings();
+      this.plugin.updateFixImageGridSpacing();
     }));
     new import_obsidian.Setting(containerEl).setName("Minimum width").setDesc("Minimum width for resized images (in pixels)").addText((text) => text.setPlaceholder("50").setValue(this.plugin.settings.minWidth.toString()).onChange(async (value) => {
       const numValue = parseInt(value);
@@ -384,6 +390,7 @@ var ImageScalePlugin = class extends import_obsidian3.Plugin {
     this.resizer = new ImageResizer(this.app, this, this.settings);
     this.addSettingTab(new ImageScaleSettingTab(this.app, this));
     this.updateHideLinkSyntax();
+    this.updateFixImageGridSpacing();
     this.registerMarkdownPostProcessor((element, context) => {
       const images = element.querySelectorAll("img");
       images.forEach((img) => {
@@ -431,12 +438,20 @@ var ImageScalePlugin = class extends import_obsidian3.Plugin {
       this.observer.disconnect();
     }
     document.body.classList.remove("hide-image-link-syntax");
+    document.body.classList.remove("fix-image-grid-spacing");
   }
   updateHideLinkSyntax() {
     if (this.settings.hideLinkSyntax) {
       document.body.classList.add("hide-image-link-syntax");
     } else {
       document.body.classList.remove("hide-image-link-syntax");
+    }
+  }
+  updateFixImageGridSpacing() {
+    if (this.settings.fixImageGridSpacing) {
+      document.body.classList.add("fix-image-grid-spacing");
+    } else {
+      document.body.classList.remove("fix-image-grid-spacing");
     }
   }
   async loadSettings() {

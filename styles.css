@@ -33,3 +33,14 @@ body.hide-image-link-syntax .cm-line .internal-embed.image-embed {
 body.hide-image-link-syntax .internal-embed.image-embed .markdown-embed-title {
 	display: none;
 }
+
+/* Fix whitespace gaps between consecutive images in Reading mode */
+/* Works with any theme (Minimal img-grid, etc.) */
+body.fix-image-grid-spacing .markdown-reading-view p:has(> .internal-embed.image-embed + .internal-embed.image-embed) {
+	font-size: 0;
+	line-height: 0;
+}
+body.fix-image-grid-spacing .markdown-reading-view p:has(> .internal-embed.image-embed) .internal-embed.image-embed {
+	font-size: initial;
+	vertical-align: top;
+}

@@ -12,6 +12,7 @@ export default class ImageScalePlugin extends Plugin {
 		this.resizer = new ImageResizer(this.app, this, this.settings);
 		this.addSettingTab(new ImageScaleSettingTab(this.app, this));
 		this.updateHideLinkSyntax();
+		this.updateFixImageGridSpacing();
 
 		this.registerMarkdownPostProcessor((element, context) => {
 			const images = element.querySelectorAll("img");
@@ -63,6 +64,7 @@ export default class ImageScalePlugin extends Plugin {
 			this.observer.disconnect();
 		}
 		document.body.classList.remove('hide-image-link-syntax');
+		document.body.classList.remove('fix-image-grid-spacing');
 	}
 
 	updateHideLinkSyntax() {
@@ -70,6 +72,14 @@ export default class ImageScalePlugin extends Plugin {
 			document.body.classList.add('hide-image-link-syntax');
 		} else {
 			document.body.classList.remove('hide-image-link-syntax');
+		}
+	}
+
+	updateFixImageGridSpacing() {
+		if (this.settings.fixImageGridSpacing) {
+			document.body.classList.add('fix-image-grid-spacing');
+		} else {
+			document.body.classList.remove('fix-image-grid-spacing');
 		}
 	}
 
